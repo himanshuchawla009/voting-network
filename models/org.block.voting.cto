@@ -4,24 +4,29 @@
 
 namespace org.block.voting
 
-participant Voter identified by email {
 
-  o String email //identity of voter can be email for development purposer ,soon we will change it to aadhar id
-  o Long age
+
+participant  Voter identified by voterId {
+  o String voterId
+  o String name
+  o String age
+
+}
+
+asset Vote identified by voterId{
+  o String voterId
+  o Boolean ifVoted
+
+}
+
+asset CandidateVotes identified by candidateParty {
+  o String candidateParty
+  o Integer votes 
+}
+
+
+transaction Voting{
   --> Vote vote
-}
-
-asset Vote identified by voteId {
-  o String voteId  //voterId number like voter card number 
-  o String value  //value is equal to "vote",every voter has only one vote to cast ie only one asset and value should not be set to "vote" again once it is assigned "cannot vote" value in voting transaction.
-}
-participant Leader identified by partyName {
-  o String partyName //party name of leader ie. congress ,bjp etc    
-  o Long numberOfVotes //number of votes a leader have and a mechanism should be used in smart contract  and permissions file so that leader can see the vote he has after completion of election
-}
-
-transaction Voting {
- 
-  --> Leader leader //when this transtion is called leader votes will increased by one.
-  --> Vote vote //Also the the value of the vote is set to "cannot vote" after voter cast their vote.
+  --> CandidateVotes candidateVotes
+  
 }
